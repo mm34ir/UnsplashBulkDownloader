@@ -83,7 +83,7 @@ namespace UnsplashBulkDownload {
             return photos.Select(photo => photo.Url);
         }
 
-        public async Task DownloadPhoto(string url, string OutputDirectory = "./") {
+        public static async Task DownloadPhoto(string url, string OutputDirectory = "./") {
             var uri = new Uri(url);
             var filename = OutputDirectory + url.Split("?").First().Split("/").Last();
             if (filename.ToLower().EndsWith(".jpg") is not true) {
@@ -91,7 +91,6 @@ namespace UnsplashBulkDownload {
             }
             var response = await Http.GetAsync(uri);
             using var outFile = new FileStream(filename, FileMode.Create);
-            ;
             await response.Content.CopyToAsync(outFile);
         }
     }

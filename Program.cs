@@ -30,7 +30,7 @@ namespace UnsplashBulkDownload {
             var api = new UnsplashApi();
             var photos = await UnsplashApi.GetCollectionPhotos("319663");
             Console.WriteLine(photos.ToJson(pretty: true));
-            var downloads = photos.Select(photo => api.DownloadPhoto(photo, OutputFolder));
+            var downloads = photos.Select(photo => UnsplashApi.DownloadPhoto(photo, OutputFolder));
             await Task.WhenAll(downloads);
         }
     }
