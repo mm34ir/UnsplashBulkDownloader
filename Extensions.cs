@@ -6,14 +6,18 @@ namespace Extensions {
     public static class Extensions {
         /// <summary>
         /// Print any object using the system json
-        /// NOTE: this might get caught in infinite loops (look how to fix...)
+        /// NOTE: reference counting is disabled for now
         /// </summary>
         /// <param name="self"></param>
         /// <param name="pretty">print multi line json</param>
+        /// <param name="handleReferences">turn on reference handling (which will look ugly, but not error out)</param>
         /// <returns></returns>
-        public static string ToJson(this object self, bool pretty = false) {
-            return JsonSerializer.Serialize(self,
-                                            new JsonSerializerOptions { WriteIndented = pretty });
+        public static string ToJson(this object self, bool pretty = false, bool handleReferences = false) {
+            var options = new JsonSerializerOptions { WriteIndented = pretty };
+            if (handleReferences) {
+                options.ReferenceHandler = ReferenceHandler.Preserve;
+            }
+            return JsonSerializer.Serialize(self, options);
         }
     }
 }
